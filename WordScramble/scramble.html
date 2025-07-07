@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+        }
+        header{
+            width:100%;
+            line-height:15vh;
+            background-color:  #1a2a6c;
+            background: linear-gradient(45deg, #1a2a6c, #b21f1f, #fdbb2d);
+
+        }
+        h1{
+            text-align: center;
+            color:  #ffffff;
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        section{
+            height: 85vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(90deg, #4e54c8, #8f94fb);
+        }
+        .gameArea{
+            width: 50%;
+            height: 400px;
+            padding: 20px 0;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); 
+        }
+        h3{
+            text-align: center;
+            font-size: 1.5rem;
+            color: #1a2a6c;
+
+        }
+        input{
+            width:40%;
+            padding: 15px 0;
+            text-align: center;
+            border-radius: 25px;
+            outline: none;
+            border: none;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            background-color: #e0f7fa; /* Soft blue on focus */
+            box-shadow: 0 0 8px #4e54c8; /* Subtle blue focus */
+        }
+        button{
+            font-size: 1rem;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            margin-top: 10px;
+            color: #ffffff;
+            background: linear-gradient(90deg, #ff512f, #dd2476); /* Vibrant button gradient */
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease-in-out;
+        }
+        button:hover{
+            background: linear-gradient(90deg, #dd2476, #ff512f); /* Reverse gradient on hover */
+            transform: translateY(-5px); /* Lift effect */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        .hidden{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Guess The Word Game</h1>
+    </header>
+
+    <section>
+        <div class="gameArea">
+            <h3 class="msg"></h3>
+            <input type="text" class="hidden">
+            <button class="btn">Click here to start</button>
+        </div>
+    </section>
+
+    <script>
+         
+         const msg = document.querySelector('.msg');
+         const guess = document.querySelector('input');
+         const btn = document.querySelector('.btn');
+         let play=false;
+         let newWords="";
+         let ranWords="";
+         let sWords = ['sparrow','crow','peacock','pigeon','eagle','dove','parrot','swan','kingfisher','kiwi','macaw','penguin','owl','goose','woodpecker'];
+
+         const createNewWords = () =>{
+               let ranNum = Math.floor(Math.random() * sWords.length);
+            //    console.log(ranNum);
+            let newTempSwords = sWords[ranNum];
+            // console.log(newTempSwords.split(""));
+            return newTempSwords;
+         }
+          
+         const scrambleWords = (arr) =>{
+             for (let i = arr.length - 1; i>0; i--){
+                let temp = arr[i];
+                // console.log(temp);
+                let j = Math.floor(Math.random()*(i+1));
+                // console.log(i);
+                // console.log(j);
+
+                arr[i]  = arr[j]; 
+                arr[j] = temp;
+             }
+
+             return arr;;
+         }
+ 
+
+         btn.addEventListener('click', function(){
+            if(!play){
+                play=true;
+                btn.innerHTML="Guess";
+                guess.classList.toggle('hidden');
+                newWords = createNewWords();
+                ranWords = scrambleWords(newWords.split("")).join("");  
+                // console.log(ranWords.join("")); 
+                 msg.innerHTML= ` Guess the Bird Name: ${ranWords}`;
+
+            }else{
+                let tempWord = guess.value;
+                if(tempWord === newWords){
+                    // console.log('correct');
+                    play=false;
+                    msg.innerHTML = `Awesome Its Correct. It is ${newWords}`;
+                    btn.innerHTML = "Start Again";
+                    guess.classList.toggle('hidden');
+                    guess.value = "";
+
+                }else{
+                    console.log('incorrect');
+                    msg.innerHTML = `Sorry Boss !Its incorrect. Please Try Agian ${ranWords}`;
+                }
+            }
+         })
+         
+
+    </script>
+
+</body>
+</html>
